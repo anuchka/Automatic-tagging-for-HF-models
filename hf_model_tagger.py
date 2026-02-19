@@ -109,11 +109,11 @@ TAG_DEFINITIONS = {
     ),
     "size_medium": _make_tag_def(
         "3–8B parameters",
-        lambda d: (v := _get_param_count(d)) is not None and 3 <= v < 8,
+        lambda d: (v := _get_param_count(d)) is not None and 3 <= v <= 8,
     ),
     "size_large": _make_tag_def(
         "8–15B parameters",
-        lambda d: (v := _get_param_count(d)) is not None and 8 <= v <= 15,
+        lambda d: (v := _get_param_count(d)) is not None and 8 < v <= 15,
     ),
     "base-model": _make_tag_def(
         "Not instruction-tuned or fine-tuned for chat",
@@ -129,7 +129,7 @@ TAG_DEFINITIONS = {
     ),
     "desktop-deployable": _make_tag_def(
         "Can run on a standard laptop (16GB RAM or less)",
-        lambda d: (v := _get_param_count(d)) is not None and v <= 8,
+        lambda d: (v := _get_param_count(d)) is not None and v <= 13,
     ),
 }
 

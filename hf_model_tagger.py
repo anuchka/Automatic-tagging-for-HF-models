@@ -399,7 +399,7 @@ def main():
     tags = list(rule_tags)
     ai_tags: list[str] = []
 
-    if not args.no_ai:
+    if False:
         if not args.quiet:
             print("Fetching README for AI context ...", file=sys.stderr)
         readme_snippet = fetch_readme(repo_id)

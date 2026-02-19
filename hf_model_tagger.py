@@ -66,6 +66,11 @@ def _get_param_count(data: dict) -> float | None:
     n = config.get("num_parameters")
     if n is not None:
         return n / 1e9
+    import re
+    name = (data.get("id") or "").lower().split("/")[-1]
+    m = re.search(r"(\d+\.?\d*)b$", name)
+    if m:
+        return float(m.group(1))
     return None
 
 def _get_max_position(data: dict) -> int | None:

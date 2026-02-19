@@ -68,6 +68,7 @@ def _get_param_count(data: dict) -> float | None:
         return n / 1e9
     import re
     name = (data.get("id") or "").lower().split("/")[-1]
+    if name in ("gpt2", "gpt-2"): return 0.117
     m = re.search(r"(\d+\.?\d*)b$", name)
     if m:
         return float(m.group(1))
@@ -98,7 +99,7 @@ TAG_DEFINITIONS = {
     ),
     "reasoning": _make_tag_def(
         "Model does multi-step logical or math reasoning",
-        lambda d: _text_contains(d, "reasoning", "cot", "chain-of-thought", "math", "gsm", "orca"),
+        lambda d: _text_contains(d, "reasoning", "cot", "chain-of-thought", "math", "gsm", "orca", "deepseek-r1", "r1", "think"),
     ),
     "long-context": _make_tag_def(
         "Context window is 100K tokens or more",

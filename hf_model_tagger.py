@@ -69,7 +69,7 @@ def _get_param_count(data: dict) -> float | None:
     import re
     name = (data.get("id") or "").lower().split("/")[-1]
     if name in ("gpt2", "gpt-2"): return 0.117
-    m = re.search(r"(\d+\.?\d*)b$", name)
+    m = re.search(r"-(\d+\.?\d*)b", name)
     if m:
         return float(m.group(1))
     return None
@@ -91,7 +91,7 @@ TAG_DEFINITIONS = {
     ),
     "code-generation": _make_tag_def(
         "Model is trained primarily on code",
-        lambda d: _text_contains(d, "code", "codellama", "starcoder", "codegen", "code-generation"),
+        lambda d: _text_contains(d, "codellama", "starcoder", "codegen", "code-generation", "coding"),
     ),
     "instruction-following": _make_tag_def(
         "Model is trained to follow instructions",
@@ -133,6 +133,10 @@ TAG_DEFINITIONS = {
         "Produces vector representations for search/RAG",
         lambda d: _text_contains(d, "embedding", "sentence-transformers", "rag", "retrieval") or (d.get("pipeline_tag") or "").lower() == "sentence-similarity",
     ),
+    "size_xlarge": _make_tag_def(
+        "More than 15B parameters",
+        lambda d: (v := _get_param_count(d)) is not None and v > 15,
+    ),
     "desktop-deployable": _make_tag_def(
         "Can run on a standard laptop (16GB RAM or less)",
         lambda d: (v := _get_param_count(d)) is not None and v <= 13,
@@ -141,7 +145,7 @@ TAG_DEFINITIONS = {
 
 # Tags we never let AI override — we have exact numeric data from HF.
 RULE_ONLY_TAGS = {
-    "size_tiny", "size_small", "size_medium", "size_large",
+    "size_tiny", "size_small", "size_medium", "size_large", "size_xlarge",
     "long-context", "desktop-deployable",
 }
 
